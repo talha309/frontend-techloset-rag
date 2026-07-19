@@ -1,126 +1,83 @@
 /**
- * script.js
- * Main UI Controller for handling chat inputs, appending bubbles, 
- * and calling the streaming/non-streaming RagApi client.
+ * api.js
+ * Thin client wrapping calls to the FastAPI backend.
+ * Reads its base URL / endpoints from RAG_CONFIG (config.js).
+ * Exposes a single global: RagApi
  */
 
-// DOM Elements Initialization
-const chatContainer = document.getElementById("chat-container");
-const chatInput = document.getElementById("chat-input");
-const sendButton = document.getElementById("send-btn");
+const RagApi = (() => {
 
-// Event Listeners for User Actions
-sendButton.addEventListener("click", handleUserMessage);
-chatInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault(); // Prevents line breaks on normal Enter press
-    handleUserMessage();
-  }
-});
+  /**
+   * Standard (non-streaming) request. Hits POST /chat.
+   * Backend returns: { success, question, answer }
+   * We normalize to: { text }
+   */
+  async function sendMessage(query) {
+    const url = `${RAG_CONFIG.API_BASE_URL}${RAG_CONFIG.CHAT_ENDPOINT}`;
 
-/**
- * Core function to handle user message flow
- */
-async function handleUserMessage() {
-  const messageText = chatInput.value.trim();
-  if (!messageText) return; // Empty message block
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query }),
+    });
 
-  // 1. Clear input field instantly for better UX
-  chatInput.value = "";
-
-  // 2. Render User Message on screen
-  appendMessageBubble(messageText, "user");
-
-  // 3. Check configuration and route request accordingly
-  if (RAG_CONFIG.STREAMING_ENABLED) {
-    handleStreamingFlow(messageText);
-  } else {
-    await handleStandardFlow(messageText);
-  }
-}
-
-/**
- * FLOW A: Real-time Streaming (EventSource / SSE)
- */
-function handleStreamingFlow(query) {
-  // Create an empty bot bubble that will receive words step-by-step
-  const botBubbleElement = appendMessageBubble("", "assistant");
-
-  // Add a quick loading state or visual cursor until token arrives
-  botBubbleElement.innerHTML = '<span class="typing-cursor">...</span>';
-
-  let isFirstToken = true;
-
-  // Call the streamMessage client from api.js
-  RagApi.streamMessage(query, {
-    onToken: (token) => {
-      if (isFirstToken) {
-        botBubbleElement.textContent = ""; // Clear loader/cursor on first token
-        isFirstToken = false;
+    if (!res.ok) {
+      let detail = `HTTP ${res.status}`;
+      try {
+        const errBody = await res.json();
+        detail = errBody.detail || detail;
+      } catch (_) {
+        // response wasn't JSON, keep the generic detail
       }
-      // Append token cleanly without parsing dangerous HTML injections
-      botBubbleElement.textContent += token;
-      scrollToBottom();
-    },
-    onDone: (finalPayload) => {
-      console.log("Streaming complete successfully.");
-      // If backend returned goodbye or empty but structured data
-      if (!botBubbleElement.textContent) {
-        botBubbleElement.textContent = finalPayload.text;
-      }
-    },
-    onError: (err) => {
-      console.error("Streaming interface error:", err);
-      botBubbleElement.textContent = "Error: Connection lost or backend crash.";
-      botBubbleElement.style.color = "red";
+      throw new Error(detail);
     }
-  });
-}
 
-/**
- * FLOW B: Standard Request/Response (Fallback JSON)
- */
-async function handleStandardFlow(query) {
-  // Render a localized loading state
-  const loadingBubble = appendMessageBubble("Thinking...", "assistant");
-
-  try {
-    const response = await RagApi.sendMessage(query);
-    // Replace loading message with actual backend data
-    loadingBubble.textContent = response.text;
-  } catch (err) {
-    console.error("Standard workflow error:", err);
-    loadingBubble.textContent = `Error: ${err.message || "Failed to reach backend."}`;
-    loadingBubble.style.color = "red";
-  } finally {
-    scrollToBottom();
+    const data = await res.json();
+    return { text: data.answer };
   }
-}
 
-/**
- * UI Utility: Dynamically creates and injects a messaging bubble
- * @param {string} text - Message content
- * @param {'user' | 'assistant'} sender - Role marker
- * @returns {HTMLElement} - The text container node for reactive edits
- */
-function appendMessageBubble(text, sender) {
-  const rowWrapper = document.createElement("div");
-  rowWrapper.className = `message-row ${sender}-row`;
+  /**
+   * Streaming request. Hits GET /stream?query=... via SSE (EventSource).
+   * Backend sends lines like: "data: <chunk>\n\n" and a final "data: [DONE]\n\n"
+   *
+   * @param {string} query
+   * @param {{ onToken?: (t:string)=>void, onDone?: (payload:{text:string})=>void, onError?: (e:Error)=>void }} handlers
+   * @returns {() => void} a cancel function to close the connection early
+   */
+  function streamMessage(query, { onToken, onDone, onError } = {}) {
+    const url = `${RAG_CONFIG.API_BASE_URL}${RAG_CONFIG.STREAM_ENDPOINT}?query=${encodeURIComponent(query)}`;
 
-  const bubble = document.createElement("div");
-  bubble.className = `message-bubble ${sender}-bubble`;
-  bubble.textContent = text; // Safe text rendering injection guard
+    let fullText = "";
+    let source;
 
-  rowWrapper.appendChild(bubble);
-  chatContainer.appendChild(rowWrapper);
+    try {
+      source = new EventSource(url);
+    } catch (err) {
+      onError && onError(err instanceof Error ? err : new Error(String(err)));
+      return () => {};
+    }
 
-  scrollToBottom();
-  return bubble; // Returned so streaming flow can track and modify it
-}
+    source.onmessage = (event) => {
+      const raw = event.data;
 
-/**
- * UI Utility: Smoothly sticks viewport scroll to the latest active text
- */
-function scrollToBottom() {
-  chatContainer.scrollTop = chatContainer.scrollHeight;
-}
+      if (raw === "[DONE]") {
+        source.close();
+        onDone && onDone({ text: fullText });
+        return;
+      }
+
+      fullText += raw;
+      onToken && onToken(raw);
+    };
+
+    source.onerror = () => {
+      source.close();
+      onError && onError(new Error("Connection lost or backend crash."));
+    };
+
+    // Allow the caller to cancel the stream manually if needed
+    return () => source.close();
+  }
+
+  return { sendMessage, streamMessage };
+})();

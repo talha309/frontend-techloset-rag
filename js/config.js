@@ -6,7 +6,7 @@
 
 const RAG_CONFIG = {
   // Backend
-  API_BASE_URL: "https://backend-techloset-rag-fastapi-production.up.railway.app/docs",
+  API_BASE_URL: "https://backend-techloset-rag-fastapi-production.up.railway.app",
   CHAT_ENDPOINT: "/chat",
 
   // Matches the exit keywords handled server-side in main.py
@@ -25,7 +25,7 @@ const RAG_CONFIG = {
   // exposes a streaming endpoint. api.js already exposes a streamMessage()
   // stub wired for this — flip this flag on when the backend is ready.
   STREAMING_ENABLED: false,
-  STREAM_ENDPOINT: "/chat/stream",
+  STREAM_ENDPOINT: "/stream", // GET request with ?query= param (see main.py), not POST
 
   // UX
   TYPING_INDICATOR_MIN_MS: 500, // avoids a jarring flash for very fast responses
