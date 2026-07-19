@@ -1,0 +1,57 @@
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+.rag-window {
+  opacity: 0;
+  transform: translateY(16px) scale(0.94);
+  transform-origin: bottom right;
+  transition:
+    opacity var(--rag-duration-window) var(--rag-ease-out),
+    transform var(--rag-duration-window) var(--rag-ease-out),
+    visibility 0s linear var(--rag-duration-window);
+}
+
+.rag-widget--open .rag-window {
+  visibility: visible;
+  pointer-events: auto;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity var(--rag-duration-window) var(--rag-ease-out),
+    transform var(--rag-duration-window) var(--rag-ease-out),
+    visibility 0s linear 0s;
+}
+
+@keyframes rag-bubble-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rag-typing-dot {
+  0%, 60%, 100% { opacity: 0.35; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-3px); }
+}
+
+@keyframes rag-breathe {
+  0%, 100% { opacity: 0; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(1.08); }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .rag-window,
+  .rag-msg,
+  .rag-launcher,
+  .rag-launcher::before,
+  .rag-typing__bubble span {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}

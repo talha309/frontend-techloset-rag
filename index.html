@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Website RAG System</title>
+
+  <!-- Fonts: Fraunces (display) + Inter (body) + IBM Plex Mono (citations/utility) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/widget-shell.css" />
+  <link rel="stylesheet" href="css/launcher.css" />
+  <link rel="stylesheet" href="css/chat.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+
+<body>
+
+  <!-- ================= HOST PAGE (demo only) ================= -->
+  <main class="host-demo">
+    <h1>Website RAG System</h1>
+    <p>This page represents any host site. The chat widget below is fully self-contained.</p>
+  </main>
+
+  <!-- ================= RAG CHAT WIDGET ROOT ================= -->
+  <div id="rag-chat-widget" class="rag-widget">
+
+    <!-- Launcher button -->
+    <button id="rag-launcher" class="rag-launcher" aria-label="Open chat" aria-expanded="false">
+      <img src="assets/icons/chat-bubble.svg" alt="" class="rag-launcher__icon rag-launcher__icon--open" />
+      <img src="assets/icons/close.svg" alt="" class="rag-launcher__icon rag-launcher__icon--close" />
+    </button>
+
+    <!-- Chat window -->
+    <section id="rag-window" class="rag-window" role="dialog" aria-label="Chat assistant" aria-hidden="true">
+
+      <header class="rag-window__header">
+        <div class="rag-window__title-block">
+          <span class="rag-window__eyebrow">Website RAG</span>
+          <h2 class="rag-window__title">Ask me anything</h2>
+        </div>
+        <button id="rag-clear" class="rag-window__clear" title="Clear conversation" aria-label="Clear conversation">
+          <img src="assets/icons/trash.svg" alt="" />
+        </button>
+      </header>
+
+      <div id="rag-messages" class="rag-messages" aria-live="polite"></div>
+
+      <div id="rag-typing" class="rag-typing" hidden>
+        <div class="rag-typing__bubble">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <form id="rag-input-form" class="rag-input-bar" autocomplete="off">
+        <textarea id="rag-input" class="rag-input-bar__field" placeholder="Type your question…" rows="1"
+          aria-label="Message"></textarea>
+        <button type="submit" id="rag-send" class="rag-input-bar__send" aria-label="Send message">
+          <img src="assets/icons/send.svg" alt="" />
+        </button>
+      </form>
+
+    </section>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/dom.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/widget.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>
+
+
+
+
+
+
+<!-- python3 -m http.server 5500 -->

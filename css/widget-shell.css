@@ -1,0 +1,176 @@
+/* =========================================================
+   WIDGET WINDOW SHELL
+   ========================================================= */
+
+#rag-chat-widget,
+#rag-chat-widget * {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--rag-cream-100);
+}
+
+.rag-window {
+  position: absolute;
+  right: 0;
+  bottom: calc(var(--rag-launcher-size) + var(--rag-space-4));
+  width: var(--rag-widget-width);
+  height: var(--rag-widget-height);
+  max-height: calc(100vh - 120px);
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  background: var(--rag-glass-bg);
+  border: 1px solid var(--rag-glass-border);
+  border-radius: var(--rag-radius-lg);
+  box-shadow: var(--rag-shadow-window);
+  backdrop-filter: blur(var(--rag-glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--rag-glass-blur)) saturate(140%);
+
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.rag-window__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--rag-space-3);
+  padding: var(--rag-space-5) var(--rag-space-5) var(--rag-space-4);
+  border-bottom: 1px solid var(--rag-cream-200);
+  background: linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0));
+  flex-shrink: 0;
+}
+
+.rag-window__eyebrow {
+  display: block;
+  font-family: var(--rag-font-mono);
+  font-size: var(--rag-fs-eyebrow);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rag-sage-700);
+  margin-bottom: var(--rag-space-1);
+}
+
+.rag-window__title {
+  font-family: var(--rag-font-display);
+  font-weight: 500;
+  font-size: var(--rag-fs-title);
+  color: var(--rag-ink-900);
+  margin: 0;
+}
+
+.rag-window__clear {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--rag-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.55;
+  transition: opacity var(--rag-duration-fast) ease, background var(--rag-duration-fast) ease;
+}
+
+.rag-window__clear:hover {
+  opacity: 1;
+  background: var(--rag-cream-200);
+}
+
+.rag-window__clear img {
+  width: 16px;
+  height: 16px;
+}
+
+/* Messages scroll area */
+.rag-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--rag-space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--rag-space-3);
+  scroll-behavior: smooth;
+}
+
+.rag-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.rag-messages::-webkit-scrollbar-thumb {
+  background: var(--rag-cream-300);
+  border-radius: var(--rag-radius-full);
+}
+
+/* Input bar */
+.rag-input-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--rag-space-2);
+  padding: var(--rag-space-3) var(--rag-space-4);
+  border-top: 1px solid var(--rag-cream-200);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.rag-input-bar__field {
+  flex: 1;
+  resize: none;
+  max-height: 96px;
+  border: 1px solid var(--rag-cream-300);
+  background: var(--rag-cream-50);
+  border-radius: var(--rag-radius-md);
+  padding: var(--rag-space-3) var(--rag-space-4);
+  font-family: var(--rag-font-body);
+  font-size: var(--rag-fs-body);
+  color: var(--rag-ink-900);
+  line-height: 1.4;
+  transition: border-color var(--rag-duration-fast) ease;
+}
+
+.rag-input-bar__field::placeholder {
+  color: var(--rag-ink-400);
+}
+
+.rag-input-bar__field:focus {
+  outline: none;
+  border-color: var(--rag-sage-500);
+}
+
+.rag-input-bar__send {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: var(--rag-radius-full);
+  background: var(--rag-sage-700);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--rag-duration-fast) ease, transform var(--rag-duration-fast) ease;
+}
+
+.rag-input-bar__send:hover {
+  background: var(--rag-sage-500);
+}
+
+.rag-input-bar__send:active {
+  transform: scale(0.92);
+}
+
+.rag-input-bar__send:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.rag-input-bar__send img {
+  width: 16px;
+  height: 16px;
+}

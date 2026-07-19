@@ -1,0 +1,85 @@
+/* =========================================================
+   RAG WIDGET — DESIGN TOKENS
+   Natural / botanical cream theme.
+   Palette avoids the common "AI cream + terracotta" default —
+   here the accent is a sage green with a dried-gold highlight,
+   evoking pressed herbarium paper rather than a tech dashboard.
+   ========================================================= */
+
+:root {
+   /* ---- Color: base surfaces ---- */
+   --rag-cream-50: #FBF8F1;
+   /* lightest surface, message bg */
+   --rag-cream-100: #F3ECDC;
+   /* widget body background */
+   --rag-cream-200: #E8DEC6;
+   /* dividers, subtle borders */
+   --rag-cream-300: #D8C9A8;
+   /* stronger borders */
+
+   /* ---- Color: ink ---- */
+   --rag-ink-900: #332B20;
+   /* primary text */
+   --rag-ink-600: #6B6151;
+   /* secondary text, timestamps */
+   --rag-ink-400: #94897A;
+   /* placeholder text */
+
+   /* ---- Color: accents ---- */
+   --rag-sage-700: #4E5B3E;
+   /* deep sage — headers, send button */
+   --rag-sage-500: #6E7B58;
+   /* mid sage — AI bubble accent */
+   --rag-sage-300: #A8B592;
+   /* light sage — hover states */
+   --rag-gold-600: #A6791F;
+   /* dried-gold — citation chips */
+   --rag-gold-100: #F1E4C3;
+   /* citation chip background */
+
+   /* ---- Color: glass ---- */
+   --rag-glass-bg: rgba(251, 248, 241, 0.72);
+   --rag-glass-border: rgba(255, 255, 255, 0.55);
+   --rag-glass-blur: 18px;
+
+   /* ---- Color: feedback ---- */
+   --rag-error: #A3462E;
+
+   /* ---- Typography ---- */
+   --rag-font-display: 'Fraunces', 'Georgia', serif;
+   --rag-font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+   --rag-font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+   --rag-fs-eyebrow: 0.6875rem;
+   --rag-fs-title: 1.125rem;
+   --rag-fs-body: 0.9375rem;
+   --rag-fs-caption: 0.75rem;
+
+   /* ---- Spacing scale ---- */
+   --rag-space-1: 4px;
+   --rag-space-2: 8px;
+   --rag-space-3: 12px;
+   --rag-space-4: 16px;
+   --rag-space-5: 20px;
+   --rag-space-6: 24px;
+
+   /* ---- Radii ---- */
+   --rag-radius-sm: 10px;
+   --rag-radius-md: 16px;
+   --rag-radius-lg: 22px;
+   --rag-radius-full: 999px;
+
+   /* ---- Shadow ---- */
+   --rag-shadow-launcher: 0 8px 24px rgba(78, 91, 62, 0.28), 0 2px 6px rgba(51, 43, 32, 0.12);
+   --rag-shadow-window: 0 24px 60px rgba(51, 43, 32, 0.22), 0 4px 16px rgba(51, 43, 32, 0.10);
+
+   /* ---- Motion ---- */
+   --rag-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+   --rag-duration-window: 320ms;
+   --rag-duration-fast: 160ms;
+
+   /* ---- Layout ---- */
+   --rag-widget-width: 380px;
+   --rag-widget-height: 600px;
+   --rag-launcher-size: 60px;
+}

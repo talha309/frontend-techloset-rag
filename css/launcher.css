@@ -1,0 +1,79 @@
+/* =========================================================
+   LAUNCHER BUTTON
+   ========================================================= */
+
+.rag-widget {
+  position: fixed;
+  right: var(--rag-space-6);
+  bottom: var(--rag-space-6);
+  z-index: 999999;
+  font-family: var(--rag-font-body);
+}
+
+.rag-launcher {
+  position: relative;
+  width: var(--rag-launcher-size);
+  height: var(--rag-launcher-size);
+  border-radius: var(--rag-radius-full);
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(155deg, var(--rag-sage-500), var(--rag-sage-700));
+  box-shadow: var(--rag-shadow-launcher);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--rag-duration-fast) var(--rag-ease-out),
+              box-shadow var(--rag-duration-fast) var(--rag-ease-out);
+}
+
+.rag-launcher:hover {
+  transform: translateY(-2px) scale(1.03);
+}
+
+.rag-launcher:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.rag-launcher:focus-visible {
+  outline: 2px solid var(--rag-gold-600);
+  outline-offset: 3px;
+}
+
+/* Signature detail: a slow "breathing" halo — like a leaf catching light —
+   only while the widget has never been opened, gently inviting the click */
+.rag-launcher::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: var(--rag-radius-full);
+  border: 1.5px solid var(--rag-sage-300);
+  opacity: 0;
+  animation: rag-breathe 3.2s ease-in-out infinite;
+}
+
+.rag-widget.rag-widget--opened-once .rag-launcher::before {
+  animation: none;
+  opacity: 0;
+}
+
+.rag-launcher__icon {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  transition: opacity var(--rag-duration-fast) ease, transform var(--rag-duration-fast) ease;
+}
+
+.rag-launcher__icon--close {
+  opacity: 0;
+  transform: rotate(-45deg) scale(0.6);
+}
+
+.rag-widget--open .rag-launcher__icon--open {
+  opacity: 0;
+  transform: rotate(45deg) scale(0.6);
+}
+
+.rag-widget--open .rag-launcher__icon--close {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}

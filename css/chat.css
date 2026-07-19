@@ -1,0 +1,131 @@
+/* =========================================================
+   CHAT BUBBLES
+   User → LEFT   |   AI → RIGHT
+   ========================================================= */
+
+.rag-msg {
+  display: flex;
+  max-width: 86%;
+  animation: rag-bubble-in var(--rag-duration-fast) var(--rag-ease-out);
+}
+
+.rag-msg--user {
+  align-self: flex-start;
+  flex-direction: row;
+}
+
+.rag-msg--ai {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+  max-width: 92%;
+}
+
+.rag-msg__bubble {
+  padding: var(--rag-space-3) var(--rag-space-4);
+  font-size: var(--rag-fs-body);
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.rag-msg--user .rag-msg__bubble {
+  background: var(--rag-cream-50);
+  border: 1px solid var(--rag-cream-200);
+  color: var(--rag-ink-900);
+  border-radius: var(--rag-radius-md) var(--rag-radius-md) var(--rag-radius-md) var(--rag-space-1);
+}
+
+.rag-msg--ai .rag-msg__bubble {
+  background: linear-gradient(155deg, var(--rag-sage-500), var(--rag-sage-700));
+  color: var(--rag-cream-50);
+  border-radius: var(--rag-radius-md) var(--rag-radius-md) var(--rag-space-1) var(--rag-radius-md);
+}
+
+.rag-msg--error .rag-msg__bubble {
+  background: #F6E6DF;
+  border: 1px solid var(--rag-error);
+  color: var(--rag-error);
+}
+
+/* Welcome message gets a slightly distinct, quieter treatment */
+.rag-msg--welcome .rag-msg__bubble {
+  background: var(--rag-cream-100);
+  border: 1px dashed var(--rag-cream-300);
+  color: var(--rag-ink-900);
+  font-family: var(--rag-font-display);
+  font-size: 0.95rem;
+}
+
+/* ---- Source citations ---- */
+.rag-citations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rag-space-1);
+  margin-top: var(--rag-space-2);
+}
+
+.rag-citation-chip {
+  font-family: var(--rag-font-mono);
+  font-size: var(--rag-fs-caption);
+  color: var(--rag-gold-600);
+  background: var(--rag-gold-100);
+  border: 1px solid rgba(166, 121, 31, 0.25);
+  border-radius: var(--rag-radius-full);
+  padding: 2px var(--rag-space-2);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--rag-duration-fast) ease;
+}
+
+.rag-citation-chip:hover {
+  background: #E9D8A6;
+}
+
+.rag-msg__timestamp {
+  display: block;
+  font-family: var(--rag-font-mono);
+  font-size: 0.625rem;
+  color: var(--rag-ink-400);
+  margin-top: var(--rag-space-1);
+}
+
+/* ---- Typing indicator ---- */
+.rag-typing {
+  padding: 0 var(--rag-space-5) var(--rag-space-2);
+  flex-shrink: 0;
+}
+
+.rag-typing__bubble {
+  align-self: flex-end;
+  width: fit-content;
+  margin-left: auto;
+  background: var(--rag-sage-500);
+  border-radius: var(--rag-radius-md) var(--rag-radius-md) var(--rag-space-1) var(--rag-radius-md);
+  padding: 10px var(--rag-space-4);
+  display: flex;
+  gap: 4px;
+}
+
+.rag-typing__bubble span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--rag-cream-50);
+  opacity: 0.6;
+  animation: rag-typing-dot 1.1s infinite ease-in-out;
+}
+
+.rag-typing__bubble span:nth-child(2) { animation-delay: 0.15s; }
+.rag-typing__bubble span:nth-child(3) { animation-delay: 0.3s; }
+
+/* ---- Host demo page (not part of the widget) ---- */
+.host-demo {
+  max-width: 640px;
+  margin: 80px auto;
+  padding: 0 24px;
+  font-family: var(--rag-font-body);
+  color: var(--rag-ink-900);
+}
+
+.host-demo h1 {
+  font-family: var(--rag-font-display);
+}
