@@ -6,7 +6,7 @@
 
 const RAG_CONFIG = {
   // Backend
-  API_BASE_URL: "http://127.0.0.1:8000",
+  API_BASE_URL: "https://backend-techloset-rag-fastapi-production.up.railway.app/docs",
   CHAT_ENDPOINT: "/chat",
 
   // Matches the exit keywords handled server-side in main.py
